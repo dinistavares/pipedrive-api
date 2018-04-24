@@ -79,8 +79,8 @@ func (p Person) String() string {
 	return Stringify(p)
 }
 
-// PersonsRespose represents multiple persons response.
-type PersonsRespose struct {
+// PersonsResponse represents multiple persons response.
+type PersonsResponse struct {
 	Success        bool           `json:"success"`
 	Data           []Person       `json:"data"`
 	AdditionalData AdditionalData `json:"additional_data"`
@@ -104,17 +104,51 @@ type PersonAddFollowerResponse struct {
 	} `json:"data"`
 }
 
+// PersonFindOptions specifices the optional parameters to the
+// PersonsService.Create method.
+type PersonFindOptions struct {
+	Term      	  string    `url:"term"`
+	SearchByEmail uint      `url:"search_by_email"`
+}
+
+// List all persons.
+//
+// Pipedrive API docs:https://developers.pipedrive.com/docs/api/v1/#!/Persons/get_persons_find
+func (s *PersonsService) Find(ctx context.Context, opt *PersonFindOptions) (*PersonsResponse, *Response, error) {
+	req, err := s.client.NewRequest(http.MethodGet, "/persons/find", struct {
+		Term      		string    `url:"term"`
+		SearchByEmail   uint      `url:"search_by_email"`
+	}{
+		opt.Term,
+		opt.SearchByEmail,
+	}, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var record *PersonsResponse
+
+	resp, err := s.client.Do(ctx, req, &record)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return record, resp, nil
+}
+
 // List all persons.
 //
 // Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Persons/get_persons
-func (s *PersonsService) List(ctx context.Context) (*PersonsRespose, *Response, error) {
+func (s *PersonsService) List(ctx context.Context) (*PersonsResponse, *Response, error) {
 	req, err := s.client.NewRequest(http.MethodGet, "/persons", nil, nil)
 
 	if err != nil {
 		return nil, nil, err
 	}
 
-	var record *PersonsRespose
+	var record *PersonsResponse
 
 	resp, err := s.client.Do(ctx, req, &record)
 
