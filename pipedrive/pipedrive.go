@@ -21,6 +21,8 @@ import (
 const (
 	defaultBaseUrl = "api.pipedrive.com/"
 
+	defaultProxyUrl = "api-proxy.pipedrive.com"
+
 	libraryVersion = "1"
 
 	hostProtocol = "https"
@@ -43,7 +45,9 @@ type Client struct {
 	// set to a domain endpoint to use. BaseURL should
 	// always be specified with a trailing slash.
 	BaseURL *url.URL
-	apiKey  string
+	apiKey  	 string
+	accessToken  string
+	useProxy     bool
 
 	rateMutex   sync.Mutex
 	currentRate Rate
@@ -85,7 +89,9 @@ type service struct {
 
 type Config struct {
 	APIKey        string
+	AccessToken   string
 	CompanyDomain string
+	UseProxy      bool
 }
 
 type Rate struct {
@@ -125,7 +131,7 @@ func parseRateFromResponse(r *http.Response) Rate {
 }
 
 func (c *Client) NewRequest(method, url string, opt interface{}, body interface{}) (*http.Request, error) {
-	if !strings.HasSuffix(c.BaseURL.Path, "/") {
+	if !strings.HasSuffix(c.BaseURL.Path, "/") && !c.useProxy {
 		return nil, fmt.Errorf("BaseURL must have a trailing slash, but %q does not", c.BaseURL)
 	}
 
@@ -149,6 +155,10 @@ func (c *Client) NewRequest(method, url string, opt interface{}, body interface{
 	}
 
 	request, err := http.NewRequest(method, u, buf)
+
+	if c.useProxy {
+		request.Header.Set("Authorization", "Bearer " + c.accessToken)
+	}
 
 	if err != nil {
 		return nil, err
@@ -261,6 +271,10 @@ func (c *Client) Do(ctx context.Context, request *http.Request, v interface{}) (
 func (c *Client) createRequestUrl(path string, opt interface{}) (string, error) {
 	uri, err := c.BaseURL.Parse(hostProtocol + "://" + defaultBaseUrl + "v" + libraryVersion)
 
+	if (c.useProxy) {
+		uri, err = c.BaseURL.Parse(hostProtocol + "://" + defaultProxyUrl)
+	}
+
 	if err != nil {
 		return path, err
 	}
@@ -271,7 +285,10 @@ func (c *Client) createRequestUrl(path string, opt interface{}) (string, error) 
 
 	if v.Kind() == reflect.Ptr && v.IsNil() {
 		parameters := url.Values{}
-		parameters.Add("api_token", c.apiKey)
+
+		if !c.useProxy {
+			parameters.Add("api_token", c.apiKey)
+		}
 
 		uri.RawQuery = parameters.Encode()
 
@@ -284,7 +301,9 @@ func (c *Client) createRequestUrl(path string, opt interface{}) (string, error) 
 		return path, err
 	}
 
-	qs.Add("api_token", c.apiKey)
+	if !c.useProxy {
+		qs.Add("api_token", c.apiKey)
+	}
 
 	uri.RawQuery = qs.Encode()
 
@@ -304,10 +323,16 @@ func (c *Client) SetOptions(options ...func(*Client) error) error {
 func NewClient(options *Config) *Client {
 	baseURL, _ := url.Parse(defaultBaseUrl)
 
+	if options.UseProxy {
+		baseURL, _ = url.Parse(defaultProxyUrl)
+	}
+
 	c := &Client{
 		client:  http.DefaultClient,
 		BaseURL: baseURL,
 		apiKey:  options.APIKey,
+		accessToken: options.AccessToken,
+		useProxy: options.UseProxy,
 	}
 
 	c.common.client = c
