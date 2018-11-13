@@ -91,6 +91,46 @@ type OrganizationResponse struct {
 	AdditionalData AdditionalData `json:"additional_data,omitempty"`
 }
 
+// OrganizationFindOptions specifices the optional parameters to the
+// OrganizationsService.Create method.
+type OrganizationFindOptions struct {
+	Term      	  string    `url:"term"`
+}
+
+// OrganizationCreateOptions specifices the optional parameters to the
+// OrganizationsService.Create method.
+type OrganizationCreateOptions struct {
+	Name      string    `json:"name"`
+	OwnerID   uint      `json:"owner_id"`
+	VisibleTo VisibleTo `json:"visible_to"`
+	AddTime   Timestamp `json:"add_time"`
+}
+
+// Find all organizations.
+//
+// Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Organizations/get_organizations_find
+func (s *OrganizationsService) Find(ctx context.Context, opt *OrganizationFindOptions) (*OrganizationsResponse, *Response, error) {
+	req, err := s.client.NewRequest(http.MethodGet, "/organizations/find", struct {
+		Term      		string    `url:"term"`
+	}{
+		opt.Term,
+	}, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var record *OrganizationsResponse
+
+	resp, err := s.client.Do(ctx, req, &record)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return record, resp, nil
+}
+
 // List all organizations.
 //
 // Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Organizations/get_organizations
@@ -111,6 +151,38 @@ func (s *OrganizationsService) List(ctx context.Context) (*OrganizationsResponse
 
 	return record, resp, nil
 }
+
+// Create a new organization.
+//
+// Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Organizations/post_organizations
+func (s *OrganizationsService) Create(ctx context.Context, opt *OrganizationCreateOptions) (*OrganizationResponse, *Response, error) {
+	req, err := s.client.NewRequest(http.MethodPost, "/organizations", nil, struct {
+		Name      string    `json:"name"`
+		OwnerID   uint      `json:"owner_id"`
+		VisibleTo VisibleTo `json:"visible_to"`
+		AddTime   string    `json:"add_time"`
+	}{
+		opt.Name,
+		opt.OwnerID,
+		opt.VisibleTo,
+		opt.AddTime.FormatFull(),
+	})
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var record *OrganizationResponse
+
+	resp, err := s.client.Do(ctx, req, &record)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return record, resp, nil
+}
+
 
 // Merge organizations.
 //
