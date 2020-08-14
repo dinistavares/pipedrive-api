@@ -78,7 +78,7 @@ func (s *WebhooksService) List(ctx context.Context) (*WebhooksResponse, *Respons
 type WebhooksCreateOptions struct {
 	SubscriptionURL  string      `url:"subscription_url"`
 	EventAction      EventAction `url:"event_action"`
-	DealProbability  EventObject `url:"event_object"`
+	EventObject      EventObject `url:"event_object"`
 	UserID           uint        `url:"user_id"`
 	HTTPAuthUser     string      `url:"http_auth_user"`
 	HTTPAuthPassword string      `url:"http_auth_password"`
