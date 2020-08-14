@@ -76,12 +76,12 @@ func (s *WebhooksService) List(ctx context.Context) (*WebhooksResponse, *Respons
 // WebhooksCreateOptions specifices the optional parameters to the
 // WebhooksService.Create method.
 type WebhooksCreateOptions struct {
-	SubscriptionURL  string      `url:"subscription_url"`
-	EventAction      EventAction `url:"event_action"`
-	EventObject      EventObject `url:"event_object"`
-	UserID           uint        `url:"user_id"`
-	HTTPAuthUser     string      `url:"http_auth_user"`
-	HTTPAuthPassword string      `url:"http_auth_password"`
+	SubscriptionURL  string      `json:"subscription_url,omitempty"`
+	EventAction      EventAction `json:"event_action,omitempty"`
+	EventObject      EventObject `json:"event_object,omitempty"`
+	UserID           uint        `json:"user_id,omitempty"`
+	HTTPAuthUser     string      `json:"http_auth_user,omitempty"`
+	HTTPAuthPassword string      `json:"http_auth_password,omitempty"`
 }
 
 // Create a webhook.
