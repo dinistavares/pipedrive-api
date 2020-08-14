@@ -57,7 +57,7 @@ const (
 	ACTION_UPDATED EventAction = "updated"
 	ACTION_MERGED  EventAction = "merged"
 	ACTION_DELETED EventAction = "deleted"
-	ACTION_ALL     EventAction = "all"
+	ACTION_ALL     EventAction = "*"
 )
 
 // Type of objects.
