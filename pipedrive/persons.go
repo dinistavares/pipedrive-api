@@ -70,7 +70,7 @@ type Person struct {
 	TimelineLastActivityTimeByOwner interface{} `json:"timeline_last_activity_time_by_owner"`
 	LastIncomingMailTime            interface{} `json:"last_incoming_mail_time"`
 	LastOutgoingMailTime            interface{} `json:"last_outgoing_mail_time"`
-	OrgName                         interface{} `json:"org_name"`
+	OrgName                         string 		`json:"org_name"`
 	OwnerName                       string      `json:"owner_name"`
 	CcEmail                         string      `json:"cc_email"`
 }
@@ -127,6 +127,28 @@ type PersonFindOptions struct {
 type PersonSearchOptions struct {
 	Term      	  string    `url:"term"`
 	Fields 		  string    `url:"fields"`
+}
+
+// Get a specific person.
+//
+// Pipedrive API docs: https://developers.pipedrive.com/docs/api/v1/#!/Persons/put_persons_id
+func (s *PersonsService) Get(ctx context.Context, id int) (*PersonResponse, *Response, error) {
+	uri := fmt.Sprintf("/persons/%v", id)
+	req, err := s.client.NewRequest(http.MethodGet, uri, nil, nil)
+
+	if err != nil {
+		return nil, nil, err
+	}
+
+	var record *PersonResponse
+
+	resp, err := s.client.Do(ctx, req, &record)
+
+	if err != nil {
+		return nil, resp, err
+	}
+
+	return record, resp, nil
 }
 
 // List all persons.
