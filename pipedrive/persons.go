@@ -304,12 +304,12 @@ func (s *PersonsService) Create(ctx context.Context, opt *PersonCreateOptions) (
 // PersonUpdateOptions specifices the optional parameters to the
 // PersonUpdateOptions.Update method.
 type PersonUpdateOptions struct {
-	Name      string    `json:"name"`
-	OwnerID   uint      `json:"owner_id"`
-	OrgID     uint      `json:"org_id"`
-	Email     string    `json:"email"`
-	Phone     string    `json:"phone"`
-	VisibleTo VisibleTo `json:"visible_to"`
+	Name      string    `json:"name,omitempty"`
+	OwnerID   uint      `json:"owner_id,omitempty"`
+	OrgID     uint      `json:"org_id,omitempty"`
+	Email     string    `json:"email,omitempty"`
+	Phone     string    `json:"phone,omitempty"`
+	VisibleTo VisibleTo `json:"visible_to,omitempty"`
 }
 
 // Update a specific person.
