@@ -14,26 +14,31 @@ type UsersService service
 
 // User represents a Pipedrive user.
 type User struct {
-	ID                  int    `json:"id"`
-	Name                string `json:"name"`
-	DefaultCurrency     string `json:"default_currency"`
-	Locale              string `json:"locale"`
-	Lang                int    `json:"lang"`
-	Email               string `json:"email"`
-	Phone               string `json:"phone"`
-	Activated           bool   `json:"activated"`
-	LastLogin           string `json:"last_login"`
-	Created             string `json:"created"`
-	Modified            string `json:"modified"`
-	SignupFlowVariation string `json:"signup_flow_variation"`
-	HasCreatedCompany   bool   `json:"has_created_company"`
-	IsAdmin             int    `json:"is_admin"`
-	TimezoneName        string `json:"timezone_name"`
-	TimezoneOffset      string `json:"timezone_offset"`
-	ActiveFlag          bool   `json:"active_flag"`
-	RoleID              int    `json:"role_id"`
-	IconURL             string `json:"icon_url"`
-	IsYou               bool   `json:"is_you"`
+	ID                int      `json:"id"`
+	Name              string   `json:"name"`
+	DefaultCurrency   string   `json:"default_currency"`
+	Locale            string   `json:"locale"`
+	Lang              int      `json:"lang"`
+	Email             string   `json:"email"`
+	Phone             string   `json:"phone"`
+	Activated         bool     `json:"activated"`
+	LastLogin         string   `json:"last_login"`
+	Created           string   `json:"created"`
+	Modified          string   `json:"modified"`
+	HasCreatedCompany bool     `json:"has_created_company"`
+	Access            []Access `json:"access"`
+	ActiveFlag        bool     `json:"active_flag"`
+	TimezoneName      string   `json:"timezone_name"`
+	TimezoneOffset    string   `json:"timezone_offset"`
+	RoleID            int      `json:"role_id"`
+	IconURL           string   `json:"icon_url"`
+	IsYou             bool     `json:"is_you"`
+	CompanyID         int      `json:"company_id"`
+	CompanyName       string   `json:"company_name"`
+	CompanyDomain     string   `json:"company_domain"`
+	CompanyCountry    string   `json:"company_country"`
+	CompanyIndustry   string   `json:"company_industry"`
+	Language          Language `json:"language"`
 }
 
 func (u User) String() string {
@@ -103,6 +108,17 @@ type UserRoleSettingsResponse struct {
 		PersonAccessLevel        int `json:"person_access_level"`
 		ProductAccessLevel       int `json:"product_access_level"`
 	} `json:"data"`
+}
+
+type Access struct {
+	App             string `json:"app"`
+	Admin           bool   `json:"admin"`
+	PermissionSetID string `json:"permission_set_id"`
+}
+
+type Language struct {
+	LanguageCode string `json:"language_code"`
+	CountryCode  string `json:"country_code"`
 }
 
 // ListFollowers lists followers of a specific user.

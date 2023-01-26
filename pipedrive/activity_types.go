@@ -67,9 +67,9 @@ func (s *ActivityTypesService) List(ctx context.Context) (*ActivityTypesResponse
 // ActivityTypesAddOptions specifices the optional parameters to the
 // ActivityTypesService.Create method.
 type ActivityTypesAddOptions struct {
-	Name    string `url:"name"`
-	IconKey string `url:"icon_key"`
-	Color   string `url:"color,omitempty"`
+	Name    string `json:"name"`
+	IconKey string `json:"icon_key"`
+	Color   string `json:"color,omitempty"`
 }
 
 // Create a new activity type.
@@ -96,10 +96,10 @@ func (s *ActivityTypesService) Create(ctx context.Context, opt *ActivityTypesAdd
 // ActivityTypesEditOptions specifices the optional parameters to the
 // ActivityTypesService.Update method.
 type ActivityTypesEditOptions struct {
-	Name    string `url:"name,omitempty"`
-	IconKey string `url:"icon_key,omitempty"`
-	Color   string `url:"color,omitempty"`
-	OrderNr uint   `url:"order_nr,omitempty"`
+	Name    string `json:"name,omitempty"`
+	IconKey string `json:"icon_key,omitempty"`
+	Color   string `json:"color,omitempty"`
+	OrderNr uint   `json:"order_nr,omitempty"`
 }
 
 // Update activity type.

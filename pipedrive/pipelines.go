@@ -14,15 +14,15 @@ type PipelinesService service
 
 // Pipeline represents a Pipedrive pipeline.
 type Pipeline struct {
-	ID              int    `json:"id"`
-	Name            string `json:"name"`
-	URLTitle        string `json:"url_title"`
-	OrderNr         int    `json:"order_nr"`
-	Active          bool   `json:"active"`
-	DealProbability bool   `json:"deal_probability"`
-	AddTime         string `json:"add_time"`
-	UpdateTime      string `json:"update_time"`
-	Selected        bool   `json:"selected"`
+	ID              int    `json:"id,omitempty"`
+	Name            string `json:"name,omitempty"`
+	URLTitle        string `json:"url_title,omitempty"`
+	OrderNr         int    `json:"order_nr,omitempty"`
+	Active          bool   `json:"active,omitempty"`
+	DealProbability bool   `json:"deal_probability,omitempty"`
+	AddTime         string `json:"add_time,omitempty"`
+	UpdateTime      string `json:"update_time,omitempty"`
+	Selected        bool   `json:"selected,omitempty"`
 }
 
 func (p Pipeline) String() string {
@@ -31,87 +31,87 @@ func (p Pipeline) String() string {
 
 // PipelinesResponse represents multiple pipelines response.
 type PipelinesResponse struct {
-	Success        bool           `json:"success"`
-	Data           []Pipeline     `json:"data"`
-	AdditionalData AdditionalData `json:"additional_data"`
+	Success        bool           `json:"success,omitempty"`
+	Data           []Pipeline     `json:"data,omitempty"`
+	AdditionalData AdditionalData `json:"additional_data,omitempty"`
 }
 
 // PipelineResponse represents single pipeline response.
 type PipelineResponse struct {
-	Success        bool           `json:"success"`
-	Data           Pipeline       `json:"data"`
-	AdditionalData AdditionalData `json:"additional_data"`
+	Success        bool           `json:"success,omitempty"`
+	Data           Pipeline       `json:"data,omitempty"`
+	AdditionalData AdditionalData `json:"additional_data,omitempty"`
 }
 
 // PipelineDealsConversionRateResponse represents conversion response.
 type PipelineDealsConversionRateResponse struct {
-	Success bool `json:"success"`
+	Success bool `json:"success,omitempty"`
 	Data    struct {
 		StageConversions []struct {
-			FromStageID    int     `json:"from_stage_id"`
-			ToStageID      int     `json:"to_stage_id"`
-			ConversionRate float64 `json:"conversion_rate"`
-		} `json:"stage_conversions"`
-		WonConversion  float64 `json:"won_conversion"`
-		LostConversion float64 `json:"lost_conversion"`
-	} `json:"data"`
+			FromStageID    int     `json:"from_stage_id,omitempty"`
+			ToStageID      int     `json:"to_stage_id,omitempty"`
+			ConversionRate float64 `json:"conversion_rate,omitempty"`
+		} `json:"stage_conversions,omitempty"`
+		WonConversion  float64 `json:"won_conversion,omitempty"`
+		LostConversion float64 `json:"lost_conversion,omitempty"`
+	} `json:"data,omitempty"`
 }
 
 // PipelineDealsMovementResponse represents movement response.
 type PipelineDealsMovementResponse struct {
-	Success bool `json:"success"`
+	Success bool `json:"success,omitempty"`
 	Data    struct {
 		MovementsBetweenStages struct {
-			Count int `json:"count"`
-		} `json:"movements_between_stages"`
+			Count int `json:"count,omitempty"`
+		} `json:"movements_between_stages,omitempty"`
 		NewDeals struct {
-			Count   int   `json:"count"`
-			DealIds []int `json:"deal_ids"`
+			Count   int   `json:"count,omitempty"`
+			DealIds []int `json:"deal_ids,omitempty"`
 			Values  struct {
-				EUR float64 `json:"EUR"`
-			} `json:"values"`
+				EUR float64 `json:"EUR,omitempty"`
+			} `json:"values,omitempty"`
 			FormattedValues struct {
-				EUR string `json:"EUR"`
-			} `json:"formatted_values"`
-		} `json:"new_deals"`
+				EUR string `json:"EUR,omitempty"`
+			} `json:"formatted_values,omitempty"`
+		} `json:"new_deals,omitempty"`
 		DealsLeftOpen struct {
-			Count   int   `json:"count"`
-			DealIds []int `json:"deal_ids"`
+			Count   int   `json:"count,omitempty"`
+			DealIds []int `json:"deal_ids,omitempty"`
 			Values  struct {
-				EUR float64 `json:"EUR"`
-			} `json:"values"`
+				EUR float64 `json:"EUR,omitempty"`
+			} `json:"values,omitempty"`
 			FormattedValues struct {
-				EUR string `json:"EUR"`
-			} `json:"formatted_values"`
-		} `json:"deals_left_open"`
+				EUR string `json:"EUR,omitempty"`
+			} `json:"formatted_values,omitempty"`
+		} `json:"deals_left_open,omitempty"`
 		WonDeals struct {
-			Count   int   `json:"count"`
-			DealIds []int `json:"deal_ids"`
+			Count   int   `json:"count,omitempty"`
+			DealIds []int `json:"deal_ids,omitempty"`
 			Values  struct {
-				EUR int `json:"EUR"`
-			} `json:"values"`
+				EUR int `json:"EUR,omitempty"`
+			} `json:"values,omitempty"`
 			FormattedValues struct {
-				EUR string `json:"EUR"`
-			} `json:"formatted_values"`
-		} `json:"won_deals"`
+				EUR string `json:"EUR,omitempty"`
+			} `json:"formatted_values,omitempty"`
+		} `json:"won_deals,omitempty"`
 		LostDeals struct {
-			Count   int   `json:"count"`
-			DealIds []int `json:"deal_ids"`
+			Count   int   `json:"count,omitempty"`
+			DealIds []int `json:"deal_ids,omitempty"`
 			Values  struct {
-				EUR int `json:"EUR"`
-			} `json:"values"`
+				EUR int `json:"EUR,omitempty"`
+			} `json:"values,omitempty"`
 			FormattedValues struct {
-				EUR string `json:"EUR"`
-			} `json:"formatted_values"`
-		} `json:"lost_deals"`
+				EUR string `json:"EUR,omitempty"`
+			} `json:"formatted_values,omitempty"`
+		} `json:"lost_deals,omitempty"`
 		AverageAgeInDays struct {
-			AcrossAllStages float64 `json:"across_all_stages"`
+			AcrossAllStages float64 `json:"across_all_stages,omitempty"`
 			ByStages        []struct {
-				StageID int `json:"stage_id"`
-				Value   int `json:"value"`
-			} `json:"by_stages"`
-		} `json:"average_age_in_days"`
-	} `json:"data"`
+				StageID int `json:"stage_id,omitempty"`
+				Value   int `json:"value,omitempty"`
+			} `json:"by_stages,omitempty"`
+		} `json:"average_age_in_days,omitempty"`
+	} `json:"data,omitempty"`
 }
 
 // List returns data about all pipelines.
@@ -185,8 +185,8 @@ func (s *PipelinesService) GetDeals(ctx context.Context, id int) (*PipelinesResp
 func (s *PipelinesService) GetDealsConversionRate(ctx context.Context, id int, startDate Timestamp, endDate Timestamp) (*PipelineDealsConversionRateResponse, *Response, error) {
 	uri := fmt.Sprintf("/pipelines/%v/conversion_statistics", id)
 	req, err := s.client.NewRequest(http.MethodGet, uri, struct {
-		StartDate string `url:"start_date"`
-		EndDate   string `url:"end_date"`
+		StartDate string `url:"start_date,omitempty"`
+		EndDate   string `url:"end_date,omitempty"`
 	}{
 		startDate.Format(),
 		endDate.Format(),
@@ -213,8 +213,8 @@ func (s *PipelinesService) GetDealsConversionRate(ctx context.Context, id int, s
 func (s *PipelinesService) GetDealsMovement(ctx context.Context, id int, startDate Timestamp, endDate Timestamp) (*PipelineDealsMovementResponse, *Response, error) {
 	uri := fmt.Sprintf("/pipelines/%v/movement_statistics", id)
 	req, err := s.client.NewRequest(http.MethodGet, uri, struct {
-		StartDate string `url:"start_date"`
-		EndDate   string `url:"end_date"`
+		StartDate string `url:"start_date,omitempty"`
+		EndDate   string `url:"end_date,omitempty"`
 	}{
 		startDate.Format(),
 		endDate.Format(),
@@ -238,10 +238,10 @@ func (s *PipelinesService) GetDealsMovement(ctx context.Context, id int, startDa
 // PipelineCreateOptions specifices the optional parameters to the
 // PipelineCreateOptions.Create method.
 type PipelineCreateOptions struct {
-	Name            string          `url:"name"`
-	DealProbability DealProbability `url:"deal_probability"`
-	OrderNr         int             `url:"order_nr"`
-	Active          ActiveFlag      `url:"active"`
+	Name            string          `url:"name,omitempty"`
+	DealProbability DealProbability `url:"deal_probability,omitempty"`
+	OrderNr         int             `url:"order_nr,omitempty"`
+	Active          ActiveFlag      `url:"active,omitempty"`
 }
 
 // Create a new pipeline.
@@ -268,10 +268,10 @@ func (s *PipelinesService) Create(ctx context.Context, opt *PipelineCreateOption
 // PipelineUpdateOptions specifices the optional parameters to the
 // PipelinesService.Update method.
 type PipelineUpdateOptions struct {
-	Name            string          `url:"name"`
-	DealProbability DealProbability `url:"deal_probability"`
-	OrderNr         int             `url:"order_nr"`
-	Active          ActiveFlag      `url:"active"`
+	Name            string          `url:"name,omitempty"`
+	DealProbability DealProbability `url:"deal_probability,omitempty"`
+	OrderNr         int             `url:"order_nr,omitempty"`
+	Active          ActiveFlag      `url:"active,omitempty"`
 }
 
 // Update a specific pipeline.
