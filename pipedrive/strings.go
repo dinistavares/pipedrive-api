@@ -1,36 +1,36 @@
 package pipedrive
 
 import (
-	"bytes"
-	"encoding/json"
-	"reflect"
+  "bytes"
+  "encoding/json"
+  "reflect"
 )
 
 func Stringify(message interface{}) string {
-	var buf bytes.Buffer
+  var buf bytes.Buffer
 
-	value := reflect.ValueOf(message)
+  value := reflect.ValueOf(message)
 
-	if value.Kind() == reflect.Ptr && value.IsNil() {
-		buf.Write([]byte("<nil>"))
-	}
+  if value.Kind() == reflect.Ptr && value.IsNil() {
+    buf.Write([]byte("<nil>"))
+  }
 
-	v := reflect.Indirect(value)
+  v := reflect.Indirect(value)
 
-	switch v.Kind() {
-	case reflect.Struct:
-		data, err := json.Marshal(message)
+  switch v.Kind() {
+  case reflect.Struct:
+    data, err := json.Marshal(message)
 
-		if err != nil {
-			break
-		}
+    if err != nil {
+      break
+    }
 
-		if v.Type() == reflect.TypeOf(Timestamp{}) {
-			break
-		}
+    if v.Type() == reflect.TypeOf(Timestamp{}) {
+      break
+    }
 
-		buf.Write([]byte(string(data)))
-	}
+    buf.Write([]byte(string(data)))
+  }
 
-	return buf.String()
+  return buf.String()
 }
