@@ -34,6 +34,13 @@ type Webhook struct {
   AdminID          int         `json:"admin_id"`
 }
 
+type WebhookVersion string 
+
+const (
+	WebhookVersion1 WebhookVersion = "1.0"
+	WebhookVersion2 WebhookVersion = "2.0"
+)
+
 func (w Webhook) String() string {
   return Stringify(w)
 }
@@ -76,12 +83,13 @@ func (s *WebhooksService) List(ctx context.Context) (*WebhooksResponse, *Respons
 // WebhooksCreateOptions specifices the optional parameters to the
 // WebhooksService.Create method.
 type WebhooksCreateOptions struct {
-  SubscriptionURL  string      `json:"subscription_url,omitempty"`
-  EventAction      EventAction `json:"event_action,omitempty"`
-  EventObject      EventObject `json:"event_object,omitempty"`
-  UserID           uint        `json:"user_id,omitempty"`
-  HTTPAuthUser     string      `json:"http_auth_user,omitempty"`
-  HTTPAuthPassword string      `json:"http_auth_password,omitempty"`
+  SubscriptionURL  string         `json:"subscription_url,omitempty"`
+  EventAction      EventAction    `json:"event_action,omitempty"`
+  EventObject      EventObject    `json:"event_object,omitempty"`
+  UserID           uint           `json:"user_id,omitempty"`
+  HTTPAuthUser     string         `json:"http_auth_user,omitempty"`
+  HTTPAuthPassword string         `json:"http_auth_password,omitempty"`
+	Version          WebhookVersion `json:"version,omitempty"`
 }
 
 // Create a webhook.
